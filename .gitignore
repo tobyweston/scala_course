@@ -1,2 +1,8 @@
-**/target/
-**/.idea/workspace.xml
+target
+submission
+.idea/workspace.xml
+
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
