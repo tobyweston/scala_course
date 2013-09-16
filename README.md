@@ -1,8 +1,8 @@
-# Functional Programming Principles in Scala 2013
+## Functional Programming Principles in Scala 2013
 
 Clone the repository
 
-   $git clone https://github.com/tobyweston/scala_course.git
+   $ git clone https://github.com/tobyweston/scala_course.git
 
 then **branch**
 
