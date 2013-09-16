@@ -2,7 +2,7 @@
 
 Clone the repository
 
-   $ git clone https://github.com/tobyweston/scala_course.git
+	$ git clone https://github.com/tobyweston/scala_course.git
 
 then **branch**
 
