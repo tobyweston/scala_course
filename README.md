@@ -6,7 +6,9 @@ Clone the repository
 
 then **branch**
 
-	$ git branch -b bobby
+	$ git branch bobby
+	$ git checkout bobby
+	$ git push -u origin bobby
 	
 Get to work
 
