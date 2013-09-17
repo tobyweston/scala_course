@@ -2,7 +2,8 @@ target
 submission
 lib_managed
 
-**/.idea
+.idea
+.idea_modules
 
 .DS_Store
 .AppleDouble
