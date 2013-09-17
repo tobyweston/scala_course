@@ -1,0 +1,4 @@
+env:
+  global:
+    - CI_HOME=`pwd`
+    
