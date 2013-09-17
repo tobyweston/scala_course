@@ -31,7 +31,7 @@ object Main {
   }
 
   def recur(characters: List[Char], count: Int): Int = {
-    if (characters.isEmpty)
+    if (characters.isEmpty || count < 0)
       count
     else if (characters.head == '(')
       recur(characters.tail, count + 1)
