@@ -1,6 +1,8 @@
 target
 submission
-.idea/workspace.xml
+lib_managed
+
+**/.idea
 
 .DS_Store
 .AppleDouble
