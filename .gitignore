@@ -2,9 +2,8 @@ target
 submission
 lib_managed
 
-**/.idea/workspace.xml
-**/.idea/uiDesigner.xml
-
+.idea
+.idea_modules
 
 .DS_Store
 .AppleDouble
