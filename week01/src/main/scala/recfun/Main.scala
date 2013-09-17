@@ -26,7 +26,20 @@ object Main {
   /**
    * Exercise 2
    */
-  def balance(chars: List[Char]): Boolean = ???
+  def balance(chars: List[Char]): Boolean = {
+    recur(chars, 0) == 0
+  }
+
+  def recur(characters: List[Char], count: Int): Int = {
+    if (characters.isEmpty)
+      count
+    else if (characters.head == '(')
+      recur(characters.tail, count + 1)
+    else if (characters.head == ')')
+      recur(characters.tail, count - 1)
+    else
+      recur(characters.tail, count)
+  }
 
   /**
    * Exercise 3
