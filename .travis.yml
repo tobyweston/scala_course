@@ -1,5 +1,6 @@
 env:
   global:
-    - CI_HOME=`pwd`
-    
+      - REPO="tobyweston/scala_course"
+      - CI_HOME=`pwd`/$REPO
+      
 script: build.sh
