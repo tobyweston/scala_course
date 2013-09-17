@@ -2,3 +2,4 @@ env:
   global:
     - CI_HOME=`pwd`
     
+script: build.sh
