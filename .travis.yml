@@ -3,4 +3,4 @@ env:
       - REPO="tobyweston/scala_course"
       - CI_HOME=`pwd`/$REPO
       
-script: build.sh
+script: ./build.sh
