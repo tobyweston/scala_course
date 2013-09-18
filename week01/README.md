@@ -35,10 +35,10 @@ Given the following function
 
 Reduce the following expressions to a value using both *call by name* **and** *value* and indicate which has the fewer steps.
 
-`test(2, 3)`
-`test(3+4, 8)`
-`test(7, 2*4)`
-`test(3+4, 2*4)`
+ 1. `test(2, 3)`
+ 2. `test(3+4, 8)`
+ 3. `test(7, 2*4)`
+ 1. `test(3+4, 2*4)`
 
 ### Question 5
 
@@ -60,4 +60,15 @@ Which evaluation strategy does Scala use by default?
 How to you write a function to use the non-default strategy?
 
 
+### Question 9
 
+Given a non-terminating expression `loop` and a function that returns the first parameter
+
+    def loop: Int = loop
+    def first(x: Int, y: Int) = x
+
+Expand the following expression using *call by name* and *call by value* by hand
+
+    first(1, loop)
+
+Code up the two versions (hint: rewrite the function of first). You can save a file with a `.sc` extension in IntelliJ and evaluate it as a *worksheet*.
