@@ -17,3 +17,12 @@ I'll add the assignments to the master week by week (probably) and you can merge
 
 	$ git checkout bobby
 	$ git merge master
+
+
+### IntelliJ
+
+The `.idea` folder is ignored so to get up and running in IDEA, run
+
+	$ sbt gen-idea
+	
+from the assignment folder.
