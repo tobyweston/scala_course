@@ -128,9 +128,9 @@ class FunSetSuite extends FunSuite {
 
   test("can create larger sets") {
     new TestSets {
-      assert(contains(evens, 2), "evens 2")
-      assert(contains(evens, 4), "evens 4")
-      assert(!contains(evens, 5), "evens 5")
+      assert(contains(evens, 2), "Evens 2")
+      assert(contains(evens, 4), "Evens 4")
+      assert(!contains(evens, 5), "Evens 5")
     }
   }
 
@@ -148,6 +148,15 @@ class FunSetSuite extends FunSuite {
       val d = diff(range, evens)
       assert(contains(d, 1), "Diff 1")
       assert(!contains(d, 2), "Diff 2")
+    }
+  }
+
+  test("filter a set using a predicate") {
+    new TestSets {
+      val f = filter(range, _ < 3)
+      assert(contains(f, 1), "Filter 1")
+      assert(contains(f, 2), "Filter 2")
+      assert(!contains(f, 3), "Filter 3")
     }
   }
 }
