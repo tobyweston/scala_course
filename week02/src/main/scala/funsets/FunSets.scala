@@ -21,11 +21,11 @@ object FunSets {
    * Returns the set of the one given element.
    */
   def singletonSet(elem: Int): Set = {
-    (x: Int) => x == elem
+    x => x == elem
   }
 
   def emptySet: Set = {
-    (x: Int) => false
+    x => false
   }
 
   /**
@@ -33,7 +33,7 @@ object FunSets {
    * the sets of all elements that are in either `s` or `t`.
    */
   def union(s: Set, t: Set): Set = {
-    (x: Int) => s(x) || t(x)
+    x => s(x) || t(x)
   }
 
   def setOf(elements: List[Int]): Set = {
@@ -46,7 +46,7 @@ object FunSets {
    * the set of all elements that are both in `s` and `t`.
    */
   def intersect(s: Set, t: Set): Set = {
-    (x: Int) => s(x) && t(x)
+    x => s(x) && t(x)
   }
 
   /**
@@ -54,7 +54,7 @@ object FunSets {
    * the set of all elements of `s` that are not in `t`.
    */
   def diff(s: Set, t: Set): Set = {
-    (x: Int) => s(x) && !t(x)
+    x => s(x) && !t(x)
   }
 
   /**
