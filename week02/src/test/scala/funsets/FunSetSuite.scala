@@ -78,6 +78,13 @@ class FunSetSuite extends FunSuite {
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
 
+    def emptySet: Set = x => false
+
+    def setOf(elements: List[Int]): Set = {
+      if(elements.isEmpty) emptySet
+      else union(singletonSet(elements.head), setOf(elements.tail))
+    }
+
     val range = setOf(List(1, 2, 3, 4, 5))
     val evens = setOf(List(2, 4, 6, 8))
     val odds = setOf(List(1, 3, 5, 7, 9))
@@ -111,13 +118,7 @@ class FunSetSuite extends FunSuite {
     }
   }
 
-  test("singletonSet(1) does not contain -1") {
-    new TestSets {
-      assert(!contains(s1, -1), "Singleton")
-    }
-  }
-
-  test("union") {
+  test("union contains all elements") {
     new TestSets {
       val s = union(s1, s2)
       assert(contains(s, 1), "Union 1")
@@ -126,55 +127,59 @@ class FunSetSuite extends FunSuite {
     }
   }
 
-  test("setOf") {
-    new TestSets {
-      assert(contains(evens, 2), "Evens 2")
-      assert(contains(evens, 4), "Evens 4")
-      assert(!contains(evens, 5), "Evens 5")
-    }
-  }
-
   test("intersection") {
     new TestSets {
-      val i = intersect(range, evens)
-      assert(!contains(i, 1), "Intersect 1")
-      assert(contains(i, 2), "Intersect 2")
-      assert(!contains(i, 3), "Intersect 3")
+      val s = intersect(range, evens)
+      assert(!contains(s, 1))
+      assert(contains(s, 2))
+      assert(!contains(s, 3))
     }
   }
 
   test("diff") {
     new TestSets {
-      val d = diff(range, evens)
-      assert(contains(d, 1), "Diff 1")
-      assert(!contains(d, 2), "Diff 2")
+      val s = diff(range, evens)
+      assert(contains(s, 1))
+      assert(!contains(s, 2))
     }
   }
 
   test("filter") {
     new TestSets {
-      val f = filter(range, _ < 3)
-      assert(contains(f, 1), "Filter 1")
-      assert(contains(f, 2), "Filter 2")
-      assert(!contains(f, 3), "Filter 3")
+      val s = filter(range, _ < 3)
+      assert(contains(s, 1))
+      assert(contains(s, 2))
+      assert(!contains(s, 3))
     }
   }
 
   test("forall") {
     new TestSets {
-      assert(forall(range, _ < 10), "range")
-      assert(forall(evens, _ % 2 == 0), "evens")
-      assert(forall(odds, _ % 2 == 1), "odds 1")
-      assert(!forall(odds, _ < 2), "odds 2")
+      assert(forall(range, _ < 10))
+      assert(forall(evens, _ % 2 == 0))
+      assert(forall(odds, _ % 2 == 1))
+      assert(!forall(odds, _ < 2))
     }
   }
 
   test("exists") {
     new TestSets {
-      assert(exists(range, _ >= 4), "range")
-      assert(exists(evens, _ < 5), "evens")
-      assert(exists(odds, _ == 5), "odds 1")
-      assert(!exists(odds, _ > 10), "odds 2")
+      assert(exists(range, _ >= 4))
+      assert(exists(evens, _ < 5))
+      assert(exists(odds, _ == 5))
+      assert(!exists(odds, _ > 10))
     }
   }
+
+  test("map") {
+    new TestSets {
+      val s = map(evens, x => x * x)
+      assert(!contains(s, 2))
+      assert(contains(s, 4))
+      assert(contains(s, 16))
+      assert(contains(s, 36))
+      assert(contains(s, 64))
+    }
+  }
+
 }

@@ -32,15 +32,6 @@ object FunSets {
     x => s(x) || t(x)
   }
 
-  def emptySet: Set = {
-    x => false
-  }
-
-  def setOf(elements: List[Int]): Set = {
-    if(elements.isEmpty) emptySet
-    else union(singletonSet(elements.head), setOf(elements.tail))
-  }
-
   /**
    * Returns the intersection of the two given sets,
    * the set of all elements that are both in `s` and `t`.
@@ -92,7 +83,9 @@ object FunSets {
   /**
    * Returns a set transformed by applying `f` to each element of `s`.
    */
-  def map(s: Set, f: Int => Int): Set = ???
+  def map(s: Set, f: Int => Int): Set = {
+    x => exists(s, y => f(y) == x)
+  }
 
   /**
    * Displays the contents of a set
