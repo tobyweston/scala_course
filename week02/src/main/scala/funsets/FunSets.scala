@@ -14,8 +14,10 @@ object FunSets {
 
   /**
    * Indicates whether a set contains a given element.
+   *
+   * Effectively calls the function defined by the type alias. aka, calls set.apply(element)
    */
-  def contains(s: Set, elem: Int): Boolean = s(elem)
+  def contains(set: Set, element: Int): Boolean = set(element)
 
   /**
    * Returns the set of the one given element.

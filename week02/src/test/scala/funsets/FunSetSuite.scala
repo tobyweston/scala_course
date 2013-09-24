@@ -52,8 +52,23 @@ class FunSetSuite extends FunSuite {
 
   test("contains is implemented") {
     assert(contains(x => true, 100))
+    assert(contains(_ => false, 23) == false)
+  }
+
+  test("example of a set defined as positive numbers") {
+    def positiveNumbers: (Int) => Boolean = {
+      (integer) => {
+        integer > 0
+      }
+    }
+    assert(contains(positiveNumbers, 10))
   }
   
+  test("abbreviated example of a set defined as positive numbers") {
+    def positiveNumbers: (Int) => Boolean = x => x > 0
+    assert(contains(positiveNumbers, 10))
+  }
+
   /**
    * When writing tests, one would often like to re-use certain values for multiple
    * tests. For instance, we would like to create an Int-set and have multiple test
