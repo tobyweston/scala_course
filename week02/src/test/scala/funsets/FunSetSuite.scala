@@ -27,14 +27,6 @@ class FunSetSuite extends FunSuite {
    */
 
   /**
-   * Tests are written using the "test" operator and the "assert" method.
-   */
-  test("string take") {
-    val message = "hello, world"
-    assert(message.take(5) == "hello")
-  }
-
-  /**
    * For ScalaTest tests, there exists a special equality operator "===" that
    * can be used inside "assert". If the assertion fails, the two values will
    * be printed in the error message. Otherwise, when using "==", the test
@@ -52,7 +44,7 @@ class FunSetSuite extends FunSuite {
 
   test("contains is implemented") {
     assert(contains(x => true, 100))
-    assert(contains(_ => false, 23) == false)
+    assert(!contains(_ => false, 23))
   }
 
   test("example of a set defined as positive numbers") {
@@ -113,15 +105,20 @@ class FunSetSuite extends FunSuite {
   }
 
   test("singletonSet does not contain an element (does not apply)") {
-    assert(singletonSet(3).apply(5) == false)
+    assert(!singletonSet(3).apply(5))
   }
 
-  ignore("union contains all elements") {
+  test("union contains all elements") {
     new TestSets {
-      val s = union(s1, s2)
-      assert(contains(s, 1), "Union 1")
-      assert(contains(s, 2), "Union 2")
-      assert(!contains(s, 3), "Union 3")
+      val set = union(s1, s2)
+      assert(contains(set, 1), "Union 1")
+      assert(contains(set, 2), "Union 2")
+      assert(!contains(set, 3), "Union 3")
     }
   }
+
+  test("example of testing union without testing contains") {
+    assert(union(singletonSet(1), singletonSet(2)).apply(1), "Same as 'contains(union(s1, s2), 1)'")
+  }
+
 }
