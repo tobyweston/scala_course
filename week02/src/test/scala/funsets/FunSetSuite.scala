@@ -4,6 +4,7 @@ import org.scalatest.FunSuite
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import funsets.FunSets._
 
 /**
  * This class is a test suite for the methods in object FunSets. To run
@@ -110,15 +111,35 @@ class FunSetSuite extends FunSuite {
 
   test("union contains all elements") {
     new TestSets {
-      val set = union(s1, s2)
-      assert(contains(set, 1), "Union 1")
-      assert(contains(set, 2), "Union 2")
-      assert(!contains(set, 3), "Union 3")
+      val union = FunSets.union(s1, s2)
+      assert(contains(union, 1), "Union 1")
+      assert(contains(union, 2), "Union 2")
+      assert(!contains(union, 3), "Union 3")
     }
   }
 
   test("example of testing union without testing contains") {
     assert(union(singletonSet(1), singletonSet(2)).apply(1), "Same as 'contains(union(s1, s2), 1)'")
+  }
+
+  test("intersection of set(1, 2)") {
+    new TestSets {
+      val union = FunSets.union(s1, s2)
+      val intersection = intersect(s1, union)
+      assert(contains(intersection, 1))
+      assert(!contains(intersection, 2))
+    }
+  }
+
+  test("larger intersection example") {
+    new TestSets {
+      val union1 = FunSets.union(s1, s2)
+      val union2 = FunSets.union(s2, s3)
+      val intersection = intersect(union1, union2)
+      assert(!contains(intersection, 1))
+      assert(contains(intersection, 2))
+      assert(!contains(intersection, 3))
+    }
   }
 
 }
