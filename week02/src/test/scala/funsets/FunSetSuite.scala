@@ -160,4 +160,12 @@ class FunSetSuite extends FunSuite {
       assert(!contains(complement, 3))
     }
   }
+
+  test("filtering based on a predicate") {
+    new TestSets {
+      val values = union(s1, s2)
+      assert(filter(values, _ == 1)(1))
+      assert(!filter(values, _ == 1)(2))
+    }
+  }
 }
