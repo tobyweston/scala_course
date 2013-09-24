@@ -25,7 +25,16 @@ object Main {
   /**
    * Exercise 2
    */
-  def balance(chars: List[Char]): Boolean = ???
+  def balance(chars: List[Char]): Boolean = {
+    def depth(chars: List[Char], currentDepth: Int = 0): Int = chars.headOption match {
+      case Some('(') if currentDepth >= 0 => depth(chars.tail, currentDepth + 1)
+      case Some(')') => depth(chars.tail, currentDepth - 1)
+      case Some(_) => depth(chars.tail, currentDepth)
+      case None => currentDepth
+    }
+
+    depth(chars) == 0
+  }
 
   /**
    * Exercise 3
