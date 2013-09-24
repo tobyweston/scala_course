@@ -56,10 +56,11 @@ object FunSets {
     def recur(x: Int): Boolean = {
       if (x > bound)
         true
-      else if (contains(s, x))
-        predicate.apply(x) && recur(x + 1)
-      else
-        recur(x + 1)
+      else if (s(x))
+        predicate(x) && recur(x + 1)
+      else {
+        recur(x + 1) // skip
+      }
     }
     recur(-bound)
   }
