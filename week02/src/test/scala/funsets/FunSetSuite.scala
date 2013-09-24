@@ -40,7 +40,7 @@ class FunSetSuite extends FunSuite {
     assert(1 + 2 === 3)
   }
 
-  
+
   import FunSets._
 
   test("contains is implemented") {
@@ -56,7 +56,7 @@ class FunSetSuite extends FunSuite {
     }
     assert(contains(positiveNumbers, 10))
   }
-  
+
   test("abbreviated example of a set defined as positive numbers") {
     def positiveNumbers: (Int) => Boolean = x => x > 0
     assert(contains(positiveNumbers, 10))
@@ -66,19 +66,19 @@ class FunSetSuite extends FunSuite {
    * When writing tests, one would often like to re-use certain values for multiple
    * tests. For instance, we would like to create an Int-set and have multiple test
    * about it.
-   * 
+   *
    * Instead of copy-pasting the code for creating the set into every test, we can
    * store it in the test class using a val:
-   * 
+   *
    *   val s1 = singletonSet(1)
-   * 
+   *
    * However, what happens if the method "singletonSet" has a bug and crashes? Then
    * the test methods are not even executed, because creating an instance of the
    * test class fails!
-   * 
+   *
    * Therefore, we put the shared values into a separate trait (traits are like
    * abstract classes), and create an instance inside each test method.
-   * 
+   *
    */
 
   trait TestSets {
@@ -90,7 +90,7 @@ class FunSetSuite extends FunSuite {
   /**
    * This test is currently disabled (by using "ignore") because the method
    * "singletonSet" is not yet implemented and the test would fail.
-   * 
+   *
    * Once you finish your implementation of "singletonSet", exchange the
    * function "ignore" by "test".
    */
@@ -166,6 +166,15 @@ class FunSetSuite extends FunSuite {
       val values = union(s1, s2)
       assert(filter(values, _ == 1)(1))
       assert(!filter(values, _ == 1)(2))
+    }
+  }
+
+  test("iterate using forAll") {
+    new TestSets {
+      val values = union(s1, s2)
+      assert(!forall(values, _ == 1))
+      assert(!forall(values, _ > 100))
+      assert(forall(values, _ < 3))
     }
   }
 }
