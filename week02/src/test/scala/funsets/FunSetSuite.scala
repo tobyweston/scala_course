@@ -117,7 +117,7 @@ class FunSetSuite extends FunSuite {
     }
   }
 
-  test("union contains all elements") {
+  test("union") {
     new TestSets {
       val s = union(s1, s2)
       assert(contains(s, 1), "Union 1")
@@ -126,7 +126,7 @@ class FunSetSuite extends FunSuite {
     }
   }
 
-  test("can create larger sets") {
+  test("setOf") {
     new TestSets {
       assert(contains(evens, 2), "Evens 2")
       assert(contains(evens, 4), "Evens 4")
@@ -134,7 +134,7 @@ class FunSetSuite extends FunSuite {
     }
   }
 
-  test("intersection contains elements in both") {
+  test("intersection") {
     new TestSets {
       val i = intersect(range, evens)
       assert(!contains(i, 1), "Intersect 1")
@@ -143,7 +143,7 @@ class FunSetSuite extends FunSuite {
     }
   }
 
-  test("diff contains elements in one but not the other") {
+  test("diff") {
     new TestSets {
       val d = diff(range, evens)
       assert(contains(d, 1), "Diff 1")
@@ -151,12 +151,30 @@ class FunSetSuite extends FunSuite {
     }
   }
 
-  test("filter a set using a predicate") {
+  test("filter") {
     new TestSets {
       val f = filter(range, _ < 3)
       assert(contains(f, 1), "Filter 1")
       assert(contains(f, 2), "Filter 2")
       assert(!contains(f, 3), "Filter 3")
+    }
+  }
+
+  test("forall") {
+    new TestSets {
+      assert(forall(range, _ < 10), "range")
+      assert(forall(evens, _ % 2 == 0), "evens")
+      assert(forall(odds, _ % 2 == 1), "odds 1")
+      assert(!forall(odds, _ < 2), "odds 2")
+    }
+  }
+
+  test("exists") {
+    new TestSets {
+      assert(exists(range, _ >= 4), "range")
+      assert(exists(evens, _ < 5), "evens")
+      assert(exists(odds, _ == 5), "odds 1")
+      assert(!exists(odds, _ > 10), "odds 2")
     }
   }
 }
