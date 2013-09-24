@@ -142,4 +142,22 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("simple set complement") {
+    new TestSets {
+      val complement = diff(s1, s2)
+      assert(contains(complement, 1))
+      assert(!contains(complement, 2))
+    }
+  }
+
+  test("larger set complement example") {
+    new TestSets {
+      val set1 = FunSets.union(s1, s2)
+      val set2 = FunSets.union(s2, s3)
+      val complement = diff(set1, set2)
+      assert(contains(complement, 1))
+      assert(!contains(complement, 2))
+      assert(!contains(complement, 3))
+    }
+  }
 }

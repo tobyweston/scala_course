@@ -25,22 +25,19 @@ object FunSets {
   def singletonSet(element: Int): Set = integer => integer == element
 
   /**
-   * Returns the union of the two given sets,
-   * the sets of all elements that are in either `s` or `t`.
+   * Returns the union of the two given sets, the sets of all elements that are in either `s` or `t`.
    */
-  def union(first: Set, second: Set): Set = integer => first(integer) || second(integer)
+  def union(s: Set, t: Set): Set = integer => s(integer) || t(integer)
 
   /**
-   * Returns the intersection of the two given sets,
-   * the set of all elements that are both in `s` and `t`.
+   * Returns the intersection of the two given sets, the set of all elements that are both in `s` and `t`.
    */
-  def intersect(first: Set, second: Set): Set = integer => first(integer) && second(integer)
+  def intersect(s: Set, t: Set): Set = integer => s(integer) && t(integer)
 
   /**
-   * Returns the difference of the two given sets,
-   * the set of all elements of `s` that are not in `t`.
+   * Returns the difference of the two given sets, the set of all elements of `s` that are not in `t`.
    */
-  def diff(s: Set, t: Set): Set = ???
+  def diff(s: Set, t: Set): Set = integer => s(integer) && !t(integer)
 
   /**
    * Returns the subset of `s` for which `p` holds.
