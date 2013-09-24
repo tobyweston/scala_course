@@ -15,3 +15,4 @@
 #sbt test
 #cd $CI_HOME/week07
 #sbt test
+echo All builds successful!
