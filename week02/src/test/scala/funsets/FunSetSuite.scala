@@ -101,19 +101,19 @@ class FunSetSuite extends FunSuite {
    * Once you finish your implementation of "singletonSet", exchange the
    * function "ignore" by "test".
    */
-  ignore("singletonSet(1) contains 1") {
-    
-    /**
-     * We create a new instance of the "TestSets" trait, this gives us access
-     * to the values "s1" to "s3". 
-     */
+  test("singletonSet(1) contains 1") {
     new TestSets {
-      /**
-       * The string argument of "assert" is a message that is printed in case
-       * the test fails. This helps identifying which assertion failed.
-       */
       assert(contains(s1, 1), "Singleton")
     }
+  }
+
+  test("example of testing 'singletonSet' without testing 'contains' or using the (pointless) trait") {
+    assert(singletonSet(1)(1), "Same as 'contains(s1, 1)'")
+    assert(singletonSet(1).apply(1), "Same as 'contains(s1, 1)'")
+  }
+
+  test("singletonSet does not contain an element (does not apply)") {
+    assert(singletonSet(3).apply(5) == false)
   }
 
   ignore("union contains all elements") {

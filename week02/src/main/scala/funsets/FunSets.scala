@@ -6,23 +6,23 @@ import common._
  * 2. Purely Functional Sets.
  */
 object FunSets {
+
   /**
-   * We represent a set by its characteristic function, i.e.
-   * its `contains` predicate.
+   * We represent a set by its characteristic function, i.e. its `contains` predicate.
    */
   type Set = Int => Boolean
 
   /**
    * Indicates whether a set contains a given element.
    *
-   * Effectively calls the function defined by the type alias. aka, calls set.apply(element)
+   * Invokes the predicate (function) defined by the type alias. NB, set(element) is equivalent to set.apply(element)
    */
-  def contains(set: Set, element: Int): Boolean = set(element)
+  def contains(set: Set, element: Int): Boolean = set.apply(element)
 
   /**
    * Returns the set of the one given element.
    */
-  def singletonSet(elem: Int): Set = ???
+  def singletonSet(element: Int): Set = integer => integer == element
 
   /**
    * Returns the union of the two given sets,
