@@ -178,7 +178,17 @@ class FunSetSuite extends FunSuite {
     new TestSets {
       val values = union(s1, s2)
       assert(exists(values, _ == 1))
-//      assert(!exists(values, _ == 3))
+      assert(!exists(values, _ == 3))
+    }
+  }
+
+  test("map") {
+    new TestSets {
+      val values = union(s1, s2)
+      val valuesPlusFour = map(values, _ + 4)
+      assert(contains(valuesPlusFour, 5))
+      assert(contains(valuesPlusFour, 6))
+      assert(FunSets.toString(valuesPlusFour) === "{5,6}")
     }
   }
 }

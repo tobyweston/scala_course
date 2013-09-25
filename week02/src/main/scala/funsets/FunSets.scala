@@ -40,7 +40,7 @@ object FunSets {
   def diff(s: Set, t: Set): Set = x => s(x) && !t(x)
 
   /**
-   * Returns the subset of `s` for which `p` holds.
+   * Returns the subset of `s` for which `predicate` holds.
    */
   def filter(s: Set, predicate: Int => Boolean): Set = intersect(s, predicate)
 
@@ -50,7 +50,7 @@ object FunSets {
   val bound = 1000
 
   /**
-   * Returns whether all bounded integers within `s` satisfy `p`. Same as the universal quantifier in first order logic.
+   * Returns whether all bounded integers within `s` satisfy `predicate`. Same as the universal quantifier in first order logic.
    *
    * If a proposition P is true for all B then this is written P ∀ B.
    */
@@ -68,17 +68,21 @@ object FunSets {
   }
 
   /**
-   * Returns whether there exists a bounded integer within `s` that satisfies `p`. Same as the existential quantifier in
+   * Returns whether there exists a bounded integer within `s` that satisfies `predicate`. Same as the existential quantifier in
    * first order logic.
    *
    * If there exists an ∃, this is written . Similarly, "does not exist" is written ∄.
    */
-  def exists(s: Set, predicate: Int => Boolean): Boolean = !forall(s, !predicate(_))
+  def exists(s: Set, predicate: Int => Boolean): Boolean = {
+    !forall(s, !predicate(_))
+  }
 
   /**
-   * Returns a set transformed by applying `f` to each element of `s`.
+   * Returns a set transformed by applying `function` to each element of `s`.
    */
-  def map(s: Set, f: Int => Int): Set = ???
+  def map(s: Set, function: Int => Int): Set = {
+    x => exists(s, y => function(y) == x)
+  }
 
   /**
    * Displays the contents of a set
