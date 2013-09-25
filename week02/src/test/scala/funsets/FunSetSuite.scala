@@ -15,7 +15,6 @@ import funsets.FunSets._
 @RunWith(classOf[JUnitRunner])
 class FunSetSuite extends FunSuite {
 
-
   /**
    * Link to the scaladoc - very clear and detailed tutorial of FunSuite
    *
@@ -39,9 +38,6 @@ class FunSetSuite extends FunSuite {
   test("adding ints") {
     assert(1 + 2 === 3)
   }
-
-
-  import FunSets._
 
   test("contains is implemented") {
     assert(contains(x => true, 100))
@@ -175,6 +171,14 @@ class FunSetSuite extends FunSuite {
       assert(!forall(values, _ == 1))
       assert(!forall(values, _ > 100))
       assert(forall(values, _ < 3))
+    }
+  }
+
+  test("exists") {
+    new TestSets {
+      val values = union(s1, s2)
+      assert(exists(values, _ == 1))
+//      assert(!exists(values, _ == 3))
     }
   }
 }

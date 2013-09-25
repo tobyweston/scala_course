@@ -71,9 +71,9 @@ object FunSets {
    * Returns whether there exists a bounded integer within `s` that satisfies `p`. Same as the existential quantifier in
    * first order logic.
    *
-   * If there exists an ∃, this is written . Similarly, "does not exist" is written ∄.  is o
+   * If there exists an ∃, this is written . Similarly, "does not exist" is written ∄.
    */
-  def exists(s: Set, p: Int => Boolean): Boolean = ???
+  def exists(s: Set, predicate: Int => Boolean): Boolean = !forall(s, !predicate(_))
 
   /**
    * Returns a set transformed by applying `f` to each element of `s`.
