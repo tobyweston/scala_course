@@ -50,7 +50,9 @@ object FunSets {
   val bound = 1000
 
   /**
-   * Returns whether all bounded integers within `s` satisfy `p`.
+   * Returns whether all bounded integers within `s` satisfy `p`. Same as the universal quantifier in first order logic.
+   *
+   * If a proposition P is true for all B then this is written P ∀ B.
    */
   def forall(s: Set, predicate: Int => Boolean): Boolean = {
     def recur(x: Int): Boolean = {
@@ -66,8 +68,10 @@ object FunSets {
   }
 
   /**
-   * Returns whether there exists a bounded integer within `s`
-   * that satisfies `p`.
+   * Returns whether there exists a bounded integer within `s` that satisfies `p`. Same as the existential quantifier in
+   * first order logic.
+   *
+   * If there exists an ∃, this is written . Similarly, "does not exist" is written ∄.  is o
    */
   def exists(s: Set, p: Int => Boolean): Boolean = ???
 
