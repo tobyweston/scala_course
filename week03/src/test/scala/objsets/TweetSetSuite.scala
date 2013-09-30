@@ -19,9 +19,9 @@ class TweetSetSuite extends FunSuite {
   }
 
   def asSet(tweets: TweetSet): Set[Tweet] = {
-    var res = Set[Tweet]()
-    tweets.foreach(res += _)
-    res
+    var result = Set[Tweet]()
+    tweets.foreach(result += _)
+    result
   }
 
   def size(set: TweetSet): Int = asSet(set).size
