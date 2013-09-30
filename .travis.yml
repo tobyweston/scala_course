@@ -4,4 +4,3 @@ env:
       - CI_HOME=`pwd`/$REPO
 
 script: ./build.sh
-
