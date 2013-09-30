@@ -7,9 +7,13 @@ import TweetReader._
  * A class to represent tweets.
  */
 class Tweet(val user: String, val text: String, val retweets: Int) {
-  override def toString: String =
-    "User: " + user + "\n" +
-    "Text: " + text + " [" + retweets + "]"
+  override def toString: String = "User: " + user + "\n" + "Text: " + text + " [" + retweets + "]"
+}
+
+object Tweet {
+  def apply(user: String, text: String, retweets: Int): Tweet = {
+    new Tweet(user, text, retweets)
+  }
 }
 
 /**
@@ -41,7 +45,7 @@ abstract class TweetSet {
    * Question: Can we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def filter(p: Tweet => Boolean): TweetSet = ???
+  def filter(p: Tweet => Boolean): TweetSet
 
   /**
    * This is a helper method for `filter` that propagates the accumulated tweets.
@@ -109,12 +113,9 @@ abstract class TweetSet {
 
 class Empty extends TweetSet {
 
-  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = ???
+  def filter(p: (Tweet) => Boolean): TweetSet = new Empty
 
-
-  /**
-   * The following methods are already implemented
-   */
+  def filterAcc(p: Tweet => Boolean, accumulator: TweetSet): TweetSet = accumulator
 
   def contains(tweet: Tweet): Boolean = false
 
@@ -125,33 +126,34 @@ class Empty extends TweetSet {
   def foreach(f: Tweet => Unit): Unit = ()
 }
 
-class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
+class NonEmpty(root: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
-  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = ???
+  def filter(predicate: (Tweet) => Boolean): TweetSet = {
+    filterAcc(predicate, new Empty)
+  }
 
+  def filterAcc(predicate: Tweet => Boolean, accumulator: TweetSet): TweetSet = {
+    left.filterAcc(predicate, right.filterAcc(predicate, if (predicate(root)) accumulator.incl(root) else accumulator))
+  }
 
-  /**
-   * The following methods are already implemented
-   */
-
-  def contains(x: Tweet): Boolean =
-    if (x.text < elem.text) left.contains(x)
-    else if (elem.text < x.text) right.contains(x)
+  def contains(tweet: Tweet): Boolean =
+    if (tweet.text < root.text) left.contains(tweet)
+    else if (root.text < tweet.text) right.contains(tweet)
     else true
 
-  def incl(x: Tweet): TweetSet = {
-    if (x.text < elem.text) new NonEmpty(elem, left.incl(x), right)
-    else if (elem.text < x.text) new NonEmpty(elem, left, right.incl(x))
+  def incl(tweet: Tweet): TweetSet = {
+    if (tweet.text < root.text) new NonEmpty(root, left.incl(tweet), right)
+    else if (root.text < tweet.text) new NonEmpty(root, left, right.incl(tweet))
     else this
   }
 
-  def remove(tw: Tweet): TweetSet =
-    if (tw.text < elem.text) new NonEmpty(elem, left.remove(tw), right)
-    else if (elem.text < tw.text) new NonEmpty(elem, left, right.remove(tw))
+  def remove(tweet: Tweet): TweetSet =
+    if (tweet.text < root.text) new NonEmpty(root, left.remove(tweet), right)
+    else if (root.text < tweet.text) new NonEmpty(root, left, right.remove(tweet))
     else left.union(right)
 
   def foreach(f: Tweet => Unit): Unit = {
-    f(elem)
+    f(root)
     left.foreach(f)
     right.foreach(f)
   }

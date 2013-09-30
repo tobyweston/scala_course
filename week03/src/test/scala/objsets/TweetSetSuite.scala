@@ -8,14 +8,17 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class TweetSetSuite extends FunSuite {
   trait TestSets {
+    val A = Tweet("a", "a body", 20)
+    val B: Tweet = Tweet("b", "b body", 20)
+    val C = Tweet("c", "c body", 7)
+    val D = Tweet("d", "d body", 9)
+
     val set1 = new Empty
-    val set2 = set1.incl(new Tweet("a", "a body", 20))
-    val set3 = set2.incl(new Tweet("b", "b body", 20))
-    val c = new Tweet("c", "c body", 7)
-    val d = new Tweet("d", "d body", 9)
-    val set4c = set3.incl(c)
-    val set4d = set3.incl(d)
-    val set5 = set4c.incl(d)
+    val set2 = set1.incl(A)
+    val set3 = set2.incl(B)
+    val set4c = set3.incl(C)
+    val set4d = set3.incl(D)
+    val set5 = set4c.incl(D)
   }
 
   def asSet(tweets: TweetSet): Set[Tweet] = {
@@ -24,17 +27,25 @@ class TweetSetSuite extends FunSuite {
     result
   }
 
+  def fromArray(tweets: Tweet*): TweetSet = {
+    val result = new Empty
+    tweets.map(tweet => result.incl(tweet))
+    result
+  }
+
   def size(set: TweetSet): Int = asSet(set).size
 
   test("filter: on empty set") {
     new TestSets {
-      assert(size(set1.filter(tw => tw.user == "a")) === 0)
+      assert(size(set1.filter(tweet => tweet.user == "a")) === 0)
     }
   }
 
   test("filter: a on set5") {
     new TestSets {
-      assert(size(set5.filter(tw => tw.user == "a")) === 1)
+//      assert(size(fromArray(A, B, C, D).filter(tweet => tweet.user == "a")) === 1)
+      val result = set5.filter(tweet => tweet.user == "a")
+      assert(size(result) === 1)
     }
   }
 
