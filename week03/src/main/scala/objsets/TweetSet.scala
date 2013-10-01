@@ -58,7 +58,7 @@ abstract class TweetSet {
    * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-   def union(that: TweetSet): TweetSet = ???
+   def union(that: TweetSet): TweetSet
 
   /**
    * Returns the tweet from this set which has the greatest retweet count.
@@ -117,6 +117,8 @@ class Empty extends TweetSet {
 
   def filterAcc(p: Tweet => Boolean, accumulator: TweetSet): TweetSet = accumulator
 
+  def union(that: TweetSet): TweetSet = that
+
   def contains(tweet: Tweet): Boolean = false
 
   def incl(tweet: Tweet): TweetSet = new NonEmpty(tweet, new Empty, new Empty)
@@ -135,6 +137,8 @@ class NonEmpty(root: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   def filterAcc(predicate: Tweet => Boolean, accumulator: TweetSet): TweetSet = {
     left.filterAcc(predicate, right.filterAcc(predicate, if (predicate(root)) accumulator.incl(root) else accumulator))
   }
+
+  def union(that: TweetSet): TweetSet = right.union(left.union(that.incl(root)))
 
   def contains(tweet: Tweet): Boolean =
     if (tweet.text < root.text) left.contains(tweet)
@@ -161,8 +165,11 @@ class NonEmpty(root: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
 trait TweetList {
   def head: Tweet
+
   def tail: TweetList
+
   def isEmpty: Boolean
+
   def foreach(f: Tweet => Unit): Unit =
     if (!isEmpty) {
       f(head)
@@ -172,7 +179,9 @@ trait TweetList {
 
 object Nil extends TweetList {
   def head = throw new java.util.NoSuchElementException("head of EmptyList")
+
   def tail = throw new java.util.NoSuchElementException("tail of EmptyList")
+
   def isEmpty = true
 }
 
