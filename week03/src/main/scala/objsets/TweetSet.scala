@@ -138,7 +138,7 @@ class NonEmpty(root: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     left.filterAcc(predicate, right.filterAcc(predicate, if (predicate(root)) accumulator.incl(root) else accumulator))
   }
 
-  def union(that: TweetSet): TweetSet = right.union(left.union(that.incl(root)))
+  def union(that: TweetSet): TweetSet = that.union(left).union(right).incl(root)
 
   def contains(tweet: Tweet): Boolean =
     if (tweet.text < root.text) left.contains(tweet)
