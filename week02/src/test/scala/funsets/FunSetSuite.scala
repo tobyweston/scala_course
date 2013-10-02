@@ -77,26 +77,14 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s4 = singletonSet(4)
+
+    val oneTwoThree = union(s1, union(s2, s3))
+    val twoThreeFour = union(s2, union(s3, s4))
   }
 
-  /**
-   * This test is currently disabled (by using "ignore") because the method
-   * "singletonSet" is not yet implemented and the test would fail.
-   * 
-   * Once you finish your implementation of "singletonSet", exchange the
-   * function "ignore" by "test".
-   */
   test("singletonSet(1) contains 1") {
-    
-    /**
-     * We create a new instance of the "TestSets" trait, this gives us access
-     * to the values "s1" to "s3". 
-     */
     new TestSets {
-      /**
-       * The string argument of "assert" is a message that is printed in case
-       * the test fails. This helps identifying which assertion failed.
-       */
       assert(contains(s1, 1), "Singleton")
     }
   }
@@ -113,18 +101,52 @@ class FunSetSuite extends FunSuite {
   test("intersect contains common elements") {
     new TestSets {
       val s = intersect(s1, s1)
-      assert(contains(s, 1), "Intersection 1")
-      assert(!contains(s, 2), "Intersection 2")
+      assert(contains(s, 1))
+      assert(!contains(s, 2))
 
     }
   }
 
   test("diff contains elements in one which are missing in the other") {
     new TestSets {
-      val s = intersect(s1, s2)
-      assert(contains(s, 1), "Intersection 1")
-      assert(!contains(s, 2), "Intersection 2")
+      val s = diff(s1, s2)
+      assert(contains(s, 1))
+      assert(!contains(s, 2))
 
     }
   }
+
+  test("filter returns elements which match a predicate") {
+    new TestSets {
+      val s = filter(oneTwoThree, _ < 3)
+      assert(contains(s, 1))
+      assert(contains(s, 2))
+      assert(!contains(s, 3))
+
+    }
+  }
+
+  test("forall checks if all elements match a predicate") {
+    new TestSets {
+      assert(forall(oneTwoThree, _ < 4))
+      assert(!forall(oneTwoThree, _ < 2))
+
+    }
+  }
+
+  test("exists checks if an element matches a predicate") {
+    new TestSets {
+      assert(exists(oneTwoThree, _ < 2))
+      assert(exists(oneTwoThree, _ < 3))
+      assert(!exists(oneTwoThree, _ > 5))
+    }
+  }
+
+  test("map applies a function to each element") {
+    new TestSets {
+      map(oneTwoThree, _ + 1) === twoThreeFour
+    }
+  }
+
+
 }
