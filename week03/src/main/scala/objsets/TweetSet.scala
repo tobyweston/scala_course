@@ -58,7 +58,7 @@ abstract class TweetSet {
    * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-   def union(that: TweetSet): TweetSet
+  def union(that: TweetSet): TweetSet
 
   /**
    * Returns the tweet from this set which has the greatest retweet count.
@@ -69,7 +69,9 @@ abstract class TweetSet {
    * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def mostRetweeted: Tweet = ???
+  def mostRetweeted: Tweet
+
+  def mostRetweeted(comparator: Tweet): Tweet = comparator
 
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -80,8 +82,7 @@ abstract class TweetSet {
    * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def descendingByRetweet: TweetList = ???
-
+  def descendingByRetweet: TweetList
 
   /**
    * The following methods are already implemented
@@ -126,6 +127,11 @@ class Empty extends TweetSet {
   def remove(tweet: Tweet): TweetSet = this
 
   def foreach(f: Tweet => Unit): Unit = ()
+
+  def descendingByRetweet: TweetList = Nil
+
+  def mostRetweeted: Tweet = ???
+
 }
 
 class NonEmpty(root: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
@@ -161,6 +167,20 @@ class NonEmpty(root: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     left.foreach(f)
     right.foreach(f)
   }
+
+  def mostRetweeted: Tweet = mostRetweeted(root)
+
+  override def mostRetweeted(comparator: Tweet) = {
+    if (root.retweets > comparator.retweets)
+      right.mostRetweeted(left.mostRetweeted(root))
+    else
+      right.mostRetweeted(left.mostRetweeted(comparator))
+  }
+
+  def descendingByRetweet: TweetList = {
+    new Cons(mostRetweeted, remove(mostRetweeted).descendingByRetweet)
+  }
+
 }
 
 trait TweetList {
