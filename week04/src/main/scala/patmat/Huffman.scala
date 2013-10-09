@@ -22,8 +22,6 @@ object Huffman {
   case class Fork(left: CodeTree, right: CodeTree, chars: List[Char], weight: Int) extends CodeTree
   case class Leaf(char: Char, weight: Int) extends CodeTree
 
-
-
   // Part 1: Basics
 
   def weight(tree: CodeTree): Int = tree match {
@@ -75,7 +73,17 @@ object Huffman {
    *       println("integer is  : "+ theInt)
    *   }
    */
-  def times(chars: List[Char]): List[(Char, Int)] = ???
+  def times(chars: List[Char]): List[(Char, Int)] = timesAcc(chars, Nil)
+
+  def timesAcc(chars: List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = chars match {
+    case c :: cs => timesAcc(cs, increment(c, acc))
+    case Nil => acc
+  }
+
+  def increment(c1: Char, freqs: List[(Char, Int)]): List[(Char, Int)] = freqs match {
+    case (c2, freq) :: ps => if(c1 == c2) (c1, freq + 1) :: ps else (c2, freq) :: increment(c1, ps)
+    case Nil => List((c1, 1))
+  }
 
   /**
    * Returns a list of `Leaf` nodes for a given frequency table `freqs`.
@@ -84,12 +92,31 @@ object Huffman {
    * head of the list should have the smallest weight), where the weight
    * of a leaf is the frequency of the character.
    */
-  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = ???
+  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = sort(makeLeafList(freqs), compare)
+
+  def makeLeafList(freqs: List[(Char, Int)]): List[Leaf] = freqs match {
+    case (char,freq) :: ps => Leaf(char, freq) :: makeLeafList(ps)
+    case Nil => Nil
+  }
+
+  def compare(x: Leaf, y: Leaf) : Boolean = {
+    x.weight < y.weight
+  }
+
+  def sort[T](xs: List[T], f: (T, T) => Boolean): List[T] = xs match {
+    case y :: ys => insert(y, sort(ys, f), f)
+    case Nil => Nil
+  }
+
+  def insert[T](x: T, xs: List[T], f: (T, T) => Boolean): List[T] = xs match {
+    case Nil => List(x)
+    case y :: ys => if(f(x, y)) x :: xs else y :: insert(x, ys, f)
+  }
 
   /**
    * Checks whether the list `trees` contains only one single code tree.
    */
-  def singleton(trees: List[CodeTree]): Boolean = ???
+  def singleton(trees: List[CodeTree]): Boolean = trees.length == 1
 
   /**
    * The parameter `trees` of this function is a list of code trees ordered
@@ -103,7 +130,10 @@ object Huffman {
    * If `trees` is a list of less than two elements, that list should be returned
    * unchanged.
    */
-  def combine(trees: List[CodeTree]): List[CodeTree] = ???
+  def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
+    case x :: xs => if(trees.length < 2) trees else makeCodeTree(x, xs.head) :: xs.tail
+    case Nil => Nil
+  }
 
   /**
    * This function will be called in the following way:
