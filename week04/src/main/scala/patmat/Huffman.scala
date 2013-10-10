@@ -71,11 +71,14 @@ object Huffman {
    *       println("integer is  : "+ theInt)
    *   }
    */
-  def times(chars: List[Char]): List[(Char, Int)] = timesAcc(chars, Nil)
+  def times(chars: List[Char]): List[(Char, Int)] = {
 
-  def timesAcc(chars: List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = chars match {
-    case c :: cs => timesAcc(cs, increment(c, acc))
-    case Nil => acc
+    def timesAcc(chars: List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = chars match {
+      case c :: cs => timesAcc(cs, increment(c, acc))
+      case Nil => acc
+    }
+
+    timesAcc(chars, Nil)
   }
 
   def increment(c1: Char, freqs: List[(Char, Int)]): List[(Char, Int)] = freqs match {
@@ -153,9 +156,8 @@ object Huffman {
    *    the example invocation. Also define the return type of the `until` function.
    *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
    */
-  def until(optimal: List[CodeTree] => Boolean, transform: List[CodeTree] => List[CodeTree])(trees: List[CodeTree]): List[CodeTree] = {
+  def until(optimal: List[CodeTree] => Boolean, transform: List[CodeTree] => List[CodeTree])(trees: List[CodeTree]): List[CodeTree] =
     if(optimal(trees)) trees else until(optimal, transform)(transform(trees))
-  }
 
   /**
    * This function creates a code tree which is optimal to encode the text `chars`.
@@ -163,9 +165,8 @@ object Huffman {
    * The parameter `chars` is an arbitrary text. This function extracts the character
    * frequencies from that text and creates a code tree based on them.
    */
-  def createCodeTree(chars: List[Char]): CodeTree = {
+  def createCodeTree(chars: List[Char]): CodeTree =
     until(singleton, combine)(makeOrderedLeafList(times(chars))).head
-  }
 
   // Part 3: Decoding
 
