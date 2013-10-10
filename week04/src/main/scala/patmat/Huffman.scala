@@ -99,8 +99,11 @@ object Huffman {
     case Nil => Nil
   }
 
-  def compare(x: Leaf, y: Leaf) : Boolean = {
-    x.weight < y.weight
+  def compare(x: CodeTree, y: CodeTree) : Boolean = (x, y) match {
+    case (x: Leaf, y: Leaf) => x.weight < y.weight
+    case (x: Fork, y: Leaf) => x.weight < y.weight
+    case (x: Leaf, y: Fork) => x.weight < y.weight
+    case (x: Fork, y: Fork) => x.weight < y.weight
   }
 
   def sort[T](xs: List[T], f: (T, T) => Boolean): List[T] = xs match {
@@ -131,7 +134,7 @@ object Huffman {
    * unchanged.
    */
   def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
-    case x :: xs => if(trees.length < 2) trees else makeCodeTree(x, xs.head) :: xs.tail
+    case x :: xs => if(trees.length < 2) trees else sort(makeCodeTree(x, xs.head) :: xs.tail, compare)
     case Nil => Nil
   }
 
