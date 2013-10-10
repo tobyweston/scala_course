@@ -1,7 +1,5 @@
 package patmat
 
-import common._
-
 /**
  * Assignment 4: Huffman coding
  *
@@ -81,7 +79,7 @@ object Huffman {
   }
 
   def increment(c1: Char, freqs: List[(Char, Int)]): List[(Char, Int)] = freqs match {
-    case (c2, freq) :: ps => if(c1 == c2) (c1, freq + 1) :: ps else (c2, freq) :: increment(c1, ps)
+    case (c2, freq) :: ps => if (c1 == c2) (c1, freq + 1) :: ps else (c2, freq) :: increment(c1, ps)
     case Nil => List((c1, 1))
   }
 
@@ -99,13 +97,6 @@ object Huffman {
     case Nil => Nil
   }
 
-  def compare(x: CodeTree, y: CodeTree) : Boolean = (x, y) match {
-    case (x: Leaf, y: Leaf) => x.weight < y.weight
-    case (x: Fork, y: Leaf) => x.weight < y.weight
-    case (x: Leaf, y: Fork) => x.weight < y.weight
-    case (x: Fork, y: Fork) => x.weight < y.weight
-  }
-
   def sort[T](xs: List[T], f: (T, T) => Boolean): List[T] = xs match {
     case y :: ys => insert(y, sort(ys, f), f)
     case Nil => Nil
@@ -113,7 +104,14 @@ object Huffman {
 
   def insert[T](x: T, xs: List[T], f: (T, T) => Boolean): List[T] = xs match {
     case Nil => List(x)
-    case y :: ys => if(f(x, y)) x :: xs else y :: insert(x, ys, f)
+    case y :: ys => if (f(x, y)) x :: xs else y :: insert(x, ys, f)
+  }
+
+  def compare(x: CodeTree, y: CodeTree) : Boolean = (x, y) match {
+    case (x: Leaf, y: Leaf) => x.weight < y.weight
+    case (x: Fork, y: Leaf) => x.weight < y.weight
+    case (x: Leaf, y: Fork) => x.weight < y.weight
+    case (x: Fork, y: Fork) => x.weight < y.weight
   }
 
   /**
@@ -134,7 +132,7 @@ object Huffman {
    * unchanged.
    */
   def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
-    case x :: xs => if(trees.length < 2) trees else sort(makeCodeTree(x, xs.head) :: xs.tail, compare)
+    case x :: xs => if (trees.length < 2) trees else sort(makeCodeTree(x, xs.head) :: xs.tail, compare)
     case Nil => Nil
   }
 
@@ -155,7 +153,9 @@ object Huffman {
    *    the example invocation. Also define the return type of the `until` function.
    *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
    */
-  def until(xxx: ???, yyy: ???)(zzz: ???): ??? = ???
+  def until(optimal: List[CodeTree] => Boolean, transform: List[CodeTree] => List[CodeTree])(trees: List[CodeTree]): List[CodeTree] = {
+    if(optimal(trees)) trees else until(optimal, transform)(transform(trees))
+  }
 
   /**
    * This function creates a code tree which is optimal to encode the text `chars`.
@@ -163,9 +163,9 @@ object Huffman {
    * The parameter `chars` is an arbitrary text. This function extracts the character
    * frequencies from that text and creates a code tree based on them.
    */
-  def createCodeTree(chars: List[Char]): CodeTree = ???
-
-
+  def createCodeTree(chars: List[Char]): CodeTree = {
+    until(singleton, combine)(makeOrderedLeafList(times(chars))).head
+  }
 
   // Part 3: Decoding
 

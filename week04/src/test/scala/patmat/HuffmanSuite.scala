@@ -62,6 +62,16 @@ class HuffmanSuite extends FunSuite {
     assert(combine(Nil) === Nil)
   }
 
+  test("until of some leaf list") {
+    val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
+    assert(until(singleton, combine)(leaflist) === List(Fork(Fork(Leaf('e', 1), Leaf('t', 2), List('e', 't'), 3), Leaf('x', 4), List('e', 't', 'x'), 7)))
+  }
+
+  test("create code tree") {
+    val tree = Fork(Leaf('a', 3), Fork(Leaf('c', 2), Fork(Leaf('d', 1), Leaf('b', 1),List('d', 'b'), 2), List('c', 'd', 'b'), 4), List('a', 'c', 'd', 'b'), 7)
+    assert(createCodeTree(string2Chars("abaaccd")) === tree)
+  }
+
   test("decode and encode a very short text should be identity") {
     new TestTrees {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
