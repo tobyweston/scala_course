@@ -12,6 +12,10 @@ class HuffmanSuite extends FunSuite {
   trait TestTrees {
     val t1 = Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5)
     val t2 = Fork(Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5), Leaf('d',4), List('a','b','d'), 9)
+
+    val t3 = Fork(Leaf('a', 3), Fork(Leaf('c', 2), Fork(Leaf('d', 1), Leaf('b', 1),List('d', 'b'), 2), List('c', 'd', 'b'), 4), List('a', 'c', 'd', 'b'), 7)
+    val t3_bits = List(0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0)
+    val t3_chars: List[Char] = List('a', 'b', 'a', 'a', 'c', 'c', 'd')
   }
 
   test("weight of a larger tree") {
@@ -68,14 +72,21 @@ class HuffmanSuite extends FunSuite {
   }
 
   test("create code tree") {
-    val tree = Fork(Leaf('a', 3), Fork(Leaf('c', 2), Fork(Leaf('d', 1), Leaf('b', 1),List('d', 'b'), 2), List('c', 'd', 'b'), 4), List('a', 'c', 'd', 'b'), 7)
-    assert(createCodeTree(string2Chars("abaaccd")) === tree)
+    new TestTrees {
+      assert(createCodeTree(string2Chars("abaaccd")) === t3)
+    }
   }
 
   test("decode") {
-    val tree = Fork(Leaf('a', 3), Fork(Leaf('c', 2), Fork(Leaf('d', 1), Leaf('b', 1),List('d', 'b'), 2), List('c', 'd', 'b'), 4), List('a', 'c', 'd', 'b'), 7)
-    val bits = List(0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0)
-    assert(decode(tree, bits) === List('a', 'b', 'a', 'a', 'c', 'c', 'd'))
+    new TestTrees {
+      assert(decode(t3, t3_bits) === t3_chars)
+    }
+  }
+
+  test("encode") {
+    new TestTrees {
+      assert(encode(t3)(t3_chars) === t3_bits)
+    }
   }
 
   test("decode and encode a very short text should be identity") {
