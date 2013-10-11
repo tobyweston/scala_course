@@ -101,6 +101,7 @@ class HuffmanSuite extends FunSuite {
   test("encode and decode") {
     new TestTrees {
       assert(decode(t3, encode(t3)(t3_chars)) === t3_chars)
+      assert(decode(t3, quickEncode(t3)(t3_chars)) === t3_chars)
     }
   }
 
