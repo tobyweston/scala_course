@@ -35,13 +35,13 @@ object Anagrams {
    *  same character, and are represented as a lowercase character in the occurrence list.
    */
   def wordOccurrences(w: Word): Occurrences = {
-    asOccurrences(w.groupBy(_.toLower).toList.map {
-      case (k,v) => (k, v.length)
-    })
+    asOccurrences(w.toLowerCase.groupBy(identity).mapValues(_.length))
   }
 
   /** Converts a sentence into its character occurrence list. */
-  def sentenceOccurrences(s: Sentence): Occurrences = s.flatMap(wordOccurrences)
+  def sentenceOccurrences(s: Sentence): Occurrences = {
+    asOccurrences(s flatMap wordOccurrences groupBy (_._1) mapValues (_.map(_._2).sum))
+  }
 
   /** The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
    *  the words that have that occurrence count.
@@ -91,11 +91,11 @@ object Anagrams {
       i <- 0 to count
     } yield (char, i)
 
-    x.combinations(occurrences.size).toList.map(charTuple => asOccurrences(charTuple))
+    x.combinations(occurrences.size).toList.map(charTuple => asOccurrences(charTuple.toMap))
   }
   
-  def asOccurrences(chars: List[(Char,Int)]): Occurrences = {
-    chars.filter(_._2 > 0).sortBy(_._1)
+  def asOccurrences(chars: Map[Char,Int]): Occurrences = {
+    chars.filter(_._2 > 0).toList.sortBy(_._1)
   }
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
@@ -127,7 +127,7 @@ object Anagrams {
       filteredOccurrence <- filter(occurrence)
     } yield filteredOccurrence
 
-    asOccurrences(newOccurrences)
+    asOccurrences(newOccurrences.toMap)
   }
 
   /** Returns a list of all anagram sentences of the given sentence.
